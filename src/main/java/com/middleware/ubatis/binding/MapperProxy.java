@@ -1,5 +1,6 @@
 package com.middleware.ubatis.binding;
 
+import com.middleware.ubatis.session.SqlSession;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,10 +17,10 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
 
     private static final Long serailVersionUID = -6424540398559729838L;
 
-    private Map<String, String> sqlSession;
+    private SqlSession sqlSession;
     private final Class<T> mapperInterface;
 
-    public MapperProxy(Map<String, String> sqlSession, Class<T> mapperInterface) {
+    public MapperProxy(SqlSession sqlSession, Class<T> mapperInterface) {
         this.sqlSession = sqlSession;
         this.mapperInterface = mapperInterface;
     }
@@ -29,7 +30,7 @@ public class MapperProxy<T> implements InvocationHandler, Serializable {
         if (Object.class.equals(method.getDeclaringClass())){
             return method.invoke(this,args);
         }else {
-            return "你被代理了！" + sqlSession.get(mapperInterface.getName() + "." + method.getName());
+            return sqlSession.selectOne(mapperInterface.getName() + "." + method.getName());
         }
     }
 }
