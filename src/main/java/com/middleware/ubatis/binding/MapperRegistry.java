@@ -1,6 +1,7 @@
 package com.middleware.ubatis.binding;
 
 import cn.hutool.core.lang.ClassScanner;
+import com.middleware.ubatis.session.Configuration;
 import com.middleware.ubatis.session.SqlSession;
 
 import java.util.HashMap;
@@ -8,6 +9,12 @@ import java.util.Map;
 import java.util.Set;
 
 public class MapperRegistry {
+
+    private Configuration configuration;
+
+    public MapperRegistry(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
     /**
      * 将已添加的映射器代理加入到 HashMap
