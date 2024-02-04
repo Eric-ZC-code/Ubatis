@@ -25,8 +25,9 @@ public class MapperProxyFactory<T> {
         return methodCache;
     }
 
+    @SuppressWarnings("unchecked")
     public T newInstance(SqlSession sqlSession) {
-        MapperProxy<T> mapperProxy = new MapperProxy<>(sqlSession, mapperInterface, methodCache);
-        return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), mapperInterface.getInterfaces(), mapperProxy);
+        final MapperProxy<T> mapperProxy = new MapperProxy<>(sqlSession, mapperInterface, methodCache);
+        return (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[]{mapperInterface}, mapperProxy);
     }
 }
