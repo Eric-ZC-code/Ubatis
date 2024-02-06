@@ -1,19 +1,19 @@
 package com.middleware.ubatis.session;
 
-import com.middleware.ubatis.buider.xml.XMLConfigBuider;
+import com.middleware.ubatis.buider.xml.XMLConfigBuilder;
 import com.middleware.ubatis.session.defaults.DefalutSqlSessionFactory;
 
 import java.io.Reader;
 
 /**
- * 构建SqlSessionFactory的工厂
- * @author Eric
+ * @description 构建SqlSessionFactory的工厂
+ * @author Eric-ZC
  */
-public class SqlSessionFactoryBuider {
+public class SqlSessionFactoryBuilder {
 
     public SqlSessionFactory build(Reader reader){
-        XMLConfigBuider xmlConfigBuider = new XMLConfigBuider(reader);
-        return build(xmlConfigBuider.parse());
+        XMLConfigBuilder xmlConfigBuilder = new XMLConfigBuilder(reader);
+        return build(xmlConfigBuilder.parse());
     }
 
     public SqlSessionFactory build(Configuration configuration){

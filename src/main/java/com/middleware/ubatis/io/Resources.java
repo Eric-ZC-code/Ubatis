@@ -5,6 +5,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+/**
+ * @description 通过类加载器获得resource的辅助类
+ * @author Eric-ZC
+ */
 public class Resources {
 
     public static Reader getResourceAsReader(String resource) throws IOException {
