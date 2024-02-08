@@ -2,6 +2,8 @@ package com.middleware.ubatis.session;
 
 import com.middleware.ubatis.binding.MapperRegistry;
 import com.middleware.ubatis.datasource.druid.DruidDataSourceFactory;
+import com.middleware.ubatis.datasource.pooled.PooledDataSourceFactory;
+import com.middleware.ubatis.datasource.unpooled.UnpooledDataSourceFactory;
 import com.middleware.ubatis.mapping.Environment;
 import com.middleware.ubatis.mapping.MappedStatement;
 import com.middleware.ubatis.session.defaults.DefaultSqlSession;
@@ -33,6 +35,8 @@ public class Configuration {
     public Configuration() {
         typeAliasRegistry.registerAlias("JDBC", JdbcTransactionFactory.class);
         typeAliasRegistry.registerAlias("DRUID", DruidDataSourceFactory.class);
+        typeAliasRegistry.registerAlias("UNPOOLED", UnpooledDataSourceFactory.class);
+        typeAliasRegistry.registerAlias("POOLED", PooledDataSourceFactory.class);
     }
 
     public void addMappers(String packageName) {
