@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 /**
- * @description 池化代理的链接
+ * @description 有池化数据源的工厂
  * @author Eric-ZC
  */
 public class UnpooledDataSource implements DataSource {

@@ -7,7 +7,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * @description 池化代理的链接
+ * @description 池化链接
  * @author Eric-ZC
  */
 public class PooledConnection implements InvocationHandler {

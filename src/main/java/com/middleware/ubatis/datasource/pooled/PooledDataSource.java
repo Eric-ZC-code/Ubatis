@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.logging.Logger;
 
 /**
- * @description 池化代理的链接
+ * @description 池化数据源，需要依赖池化链接
  * @author Eric-ZC
  */
 public class PooledDataSource implements DataSource {

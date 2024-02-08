@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @description 池化代理的链接
+ * @description 池状态的类，属于临界资源
  * @author Eric-ZC
  */
 public class PoolState {

@@ -6,7 +6,7 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * @description 池化代理的链接
+ * @description 无池化数据源的工厂
  * @author Eric-ZC
  */
 public class UnpooledDataSourceFactory implements DataSourceFactory {

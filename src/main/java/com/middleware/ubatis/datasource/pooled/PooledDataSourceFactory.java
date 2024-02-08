@@ -5,7 +5,7 @@ import com.middleware.ubatis.datasource.unpooled.UnpooledDataSourceFactory;
 import javax.sql.DataSource;
 
 /**
- * @description 池化代理的链接
+ * @description 池化数据源的工厂
  * @author Eric-ZC
  */
 public class PooledDataSourceFactory extends UnpooledDataSourceFactory {
