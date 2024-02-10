@@ -1,6 +1,5 @@
 package com.middleware.ubatis.session.defaults;
 
-import com.middleware.ubatis.binding.MapperRegistry;
 import com.middleware.ubatis.executor.Executor;
 import com.middleware.ubatis.mapping.Environment;
 import com.middleware.ubatis.session.Configuration;
@@ -14,7 +13,7 @@ import java.sql.SQLException;
 
 public class DefalutSqlSessionFactory implements SqlSessionFactory {
 
-    private Configuration configuration;
+    private final Configuration configuration;
 
     public DefalutSqlSessionFactory(Configuration configuration) {
         this.configuration = configuration;

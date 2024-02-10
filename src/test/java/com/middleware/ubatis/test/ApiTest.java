@@ -16,7 +16,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.reflect.Proxy;
 
 @Slf4j
 public class ApiTest {
@@ -30,8 +29,8 @@ public class ApiTest {
         IUserDao userDao = sqlSession.getMapper(IUserDao.class);
 
         // 3. 测试验证
-            User user = userDao.queryUserInfoById(1L);
-            log.info("测试结果：{}", JSON.toJSONString(user));
+        User user = userDao.queryUserInfoById(1L);
+        log.info("测试结果：{}", JSON.toJSONString(user));
     }
 
     @Test
