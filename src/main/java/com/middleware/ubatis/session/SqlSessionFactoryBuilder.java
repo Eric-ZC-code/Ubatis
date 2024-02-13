@@ -1,6 +1,6 @@
 package com.middleware.ubatis.session;
 
-import com.middleware.ubatis.buider.xml.XMLConfigBuilder;
+import com.middleware.ubatis.builder.xml.XMLConfigBuilder;
 import com.middleware.ubatis.session.defaults.DefalutSqlSessionFactory;
 
 import java.io.Reader;

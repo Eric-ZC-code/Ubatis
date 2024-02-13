@@ -1,7 +1,7 @@
 package com.middleware.ubatis.test;
 
 import com.alibaba.fastjson.JSON;
-import com.middleware.ubatis.buider.xml.XMLConfigBuilder;
+import com.middleware.ubatis.builder.xml.XMLConfigBuilder;
 import com.middleware.ubatis.executor.Executor;
 import com.middleware.ubatis.io.Resources;
 import com.middleware.ubatis.mapping.Environment;
