@@ -6,6 +6,7 @@ import com.middleware.ubatis.datasource.pooled.PooledDataSourceFactory;
 import com.middleware.ubatis.datasource.unpooled.UnpooledDataSourceFactory;
 import com.middleware.ubatis.executor.Executor;
 import com.middleware.ubatis.executor.SimpleExecutor;
+import com.middleware.ubatis.executor.parameter.ParameterHandler;
 import com.middleware.ubatis.executor.resultset.DefaultResultSetHandler;
 import com.middleware.ubatis.executor.resultset.ResultSetHandler;
 import com.middleware.ubatis.executor.statement.PreparedStatementHandler;
@@ -18,6 +19,7 @@ import com.middleware.ubatis.reflection.factory.DefaultObjectFactory;
 import com.middleware.ubatis.reflection.factory.ObjectFactory;
 import com.middleware.ubatis.reflection.wrapper.DefaultObjectWrapperFactory;
 import com.middleware.ubatis.reflection.wrapper.ObjectWrapperFactory;
+import com.middleware.ubatis.scripting.LanguageDriver;
 import com.middleware.ubatis.scripting.LanguageDriverRegistry;
 import com.middleware.ubatis.scripting.xmltags.XMLLanguageDriver;
 import com.middleware.ubatis.session.defaults.DefaultSqlSession;
@@ -155,5 +157,16 @@ public class Configuration {
 
     public LanguageDriverRegistry getLanguageRegistry() {
         return languageRegistry;
+    }
+
+    public ParameterHandler newParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
+        // 创建参数处理器
+        ParameterHandler parameterHandler = mappedStatement.getLang().createParameterHandler(mappedStatement, parameterObject, boundSql);
+        // 插件的一些参数，也是在这里处理，暂时不添加这部分内容 interceptorChain.pluginAll(parameterHandler);
+        return parameterHandler;
+    }
+
+    public LanguageDriver getDefaultScriptingLanguageInstance() {
+        return languageRegistry.getDefaultDriver();
     }
 }

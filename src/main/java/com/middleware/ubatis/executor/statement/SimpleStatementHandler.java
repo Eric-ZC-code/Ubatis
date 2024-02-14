@@ -1,6 +1,7 @@
 package com.middleware.ubatis.executor.statement;
 
 import com.middleware.ubatis.executor.Executor;
+import com.middleware.ubatis.executor.parameter.ParameterHandler;
 import com.middleware.ubatis.mapping.BoundSql;
 import com.middleware.ubatis.mapping.MappedStatement;
 import com.middleware.ubatis.session.ResultHandler;

@@ -2,6 +2,8 @@ package com.middleware.ubatis.mapping;
 
 import com.middleware.ubatis.session.Configuration;
 import com.middleware.ubatis.type.JdbcType;
+import com.middleware.ubatis.type.TypeHandler;
+import com.middleware.ubatis.type.TypeHandlerRegistry;
 
 /**
  * @description 参数映射 #{property,javaType=int,jdbcType=NUMERIC}
@@ -16,6 +18,7 @@ public class ParameterMapping {
     private Class<?> javaType = Object.class;
     // jdbcType=NUMERIC
     private JdbcType jdbcType;
+    private TypeHandler typeHandler;
 
     private ParameterMapping() {
     }
@@ -41,6 +44,11 @@ public class ParameterMapping {
         }
 
         public ParameterMapping build(){
+            if (parameterMapping.typeHandler == null && parameterMapping.javaType != null) {
+                Configuration configuration = parameterMapping.configuration;
+                TypeHandlerRegistry typeHandlerRegistry = configuration.getTypeHandlerRegistry();
+                parameterMapping.typeHandler = typeHandlerRegistry.getTypeHandler(parameterMapping.javaType, parameterMapping.jdbcType);
+            }
             return parameterMapping;
         }
 
@@ -60,5 +68,9 @@ public class ParameterMapping {
 
     public JdbcType getJdbcType() {
         return jdbcType;
+    }
+
+    public TypeHandler<?> getTypeHandler() {
+        return typeHandler;
     }
 }

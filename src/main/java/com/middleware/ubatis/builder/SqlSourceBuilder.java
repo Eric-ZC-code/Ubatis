@@ -4,8 +4,10 @@ import com.middleware.ubatis.mapping.ParameterMapping;
 import com.middleware.ubatis.mapping.SqlSource;
 import com.middleware.ubatis.parsing.GenericTokenParser;
 import com.middleware.ubatis.parsing.TokenHandler;
+import com.middleware.ubatis.reflection.MetaClass;
 import com.middleware.ubatis.reflection.MetaObject;
 import com.middleware.ubatis.session.Configuration;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.Map;
  * @author Eric-ZC
  * @description SQL 源码构建器
  */
+@Slf4j
 public class SqlSourceBuilder extends BaseBuilder {
 
     private static final String parameterProperties = "javaType,jdbcType,mode,numericScale,resultMap,typeHandler,jdbcTypeName";
@@ -58,10 +61,24 @@ public class SqlSourceBuilder extends BaseBuilder {
             // 先解析参数映射,就是转化成一个 HashMap | #{favouriteSection,jdbcType=VARCHAR}
             Map<String, String> propertiesMap = new ParameterExpression(content);
             String property = propertiesMap.get("property");
-            Class<?> propertyType = parameterType;
+            Class<?> propertyType;
+            if (typeHandlerRegistry.hasTypeHandler(parameterType)) {
+                propertyType = parameterType;
+            } else if (property != null) {
+                MetaClass metaClass = MetaClass.forClass(parameterType);
+                if (metaClass.hasGetter(property)) {
+                    propertyType = metaClass.getGetterType(property);
+                } else {
+                    propertyType = Object.class;
+                }
+            } else {
+                propertyType = Object.class;
+            }
+            log.info("构建参数映射 property：{} propertyType：{}", property, propertyType);
             ParameterMapping.Builder builder = new ParameterMapping.Builder(configuration, property, propertyType);
             return builder.build();
         }
+
 
     }
 

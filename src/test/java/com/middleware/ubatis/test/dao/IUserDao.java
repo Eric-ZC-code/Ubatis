@@ -6,4 +6,6 @@ public interface IUserDao {
 
     User queryUserInfoById(Long number);
 
+    User queryUserInfo(User user);
+
 }
