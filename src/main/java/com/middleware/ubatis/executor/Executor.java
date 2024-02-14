@@ -3,6 +3,7 @@ package com.middleware.ubatis.executor;
 import com.middleware.ubatis.mapping.BoundSql;
 import com.middleware.ubatis.mapping.MappedStatement;
 import com.middleware.ubatis.session.ResultHandler;
+import com.middleware.ubatis.session.RowBounds;
 import com.middleware.ubatis.transaction.Transaction;
 
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public interface Executor {
 
     ResultHandler NO_RESULT_HANDLER = null;
 
-    <E> List<E> query(MappedStatement ms, Object parameter, ResultHandler resultHandler, BoundSql boundSql);
+    <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql);
 
     Transaction getTransaction();
 

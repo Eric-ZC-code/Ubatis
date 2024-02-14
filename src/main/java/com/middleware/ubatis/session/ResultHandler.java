@@ -6,6 +6,6 @@ package com.middleware.ubatis.session;
  */
 public interface ResultHandler {
 
-    void handleResult();
+    void handleResult(ResultContext context);
 
 }

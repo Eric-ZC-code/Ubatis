@@ -1,12 +1,16 @@
 package com.middleware.ubatis.session.defaults;
 
+import com.alibaba.fastjson.JSON;
 import com.middleware.ubatis.executor.Executor;
 import com.middleware.ubatis.mapping.MappedStatement;
 import com.middleware.ubatis.session.Configuration;
+import com.middleware.ubatis.session.RowBounds;
 import com.middleware.ubatis.session.SqlSession;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+@Slf4j
 public class DefaultSqlSession implements SqlSession {
 
     /**
@@ -31,8 +35,9 @@ public class DefaultSqlSession implements SqlSession {
 
     @Override
     public <T> T selectOne(String statement, Object parameter) {
+        log.info("执行查询 statement：{} parameter：{}", statement, JSON.toJSONString(parameter));
         MappedStatement ms = configuration.getMappedStatement(statement);
-        List<T> list = executor.query(ms, parameter, Executor.NO_RESULT_HANDLER, ms.getSqlSource().getBoundSql(parameter));
+        List<T> list = executor.query(ms, parameter, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, ms.getSqlSource().getBoundSql(parameter));
         return list.get(0);
     }
 

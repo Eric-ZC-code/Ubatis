@@ -2,7 +2,8 @@ package com.middleware.ubatis.mapping;
 
 import com.middleware.ubatis.scripting.LanguageDriver;
 import com.middleware.ubatis.session.Configuration;
-import java.util.Map;
+
+import java.util.List;
 
 /**
  * @description 映射语句类
@@ -16,10 +17,12 @@ public class MappedStatement {
     private SqlSource sqlSource;
     Class<?> resultType;
     private LanguageDriver lang;
+    private List<ResultMap> resultMaps;
 
     MappedStatement() {
         // constructor disabled
     }
+
 
     /**
      * 建造映射语句
@@ -37,10 +40,19 @@ public class MappedStatement {
             mappedStatement.lang = configuration.getDefaultScriptingLanguageInstance();
         }
 
+        public Builder resultMaps(List<ResultMap> resultMaps) {
+            mappedStatement.resultMaps = resultMaps;
+            return this;
+        }
+
         public MappedStatement build() {
             assert mappedStatement.configuration != null;
             assert mappedStatement.id != null;
             return mappedStatement;
+        }
+
+        public String id() {
+            return mappedStatement.id;
         }
 
     }
@@ -71,5 +83,9 @@ public class MappedStatement {
 
     public LanguageDriver getLang() {
         return lang;
+    }
+
+    public List<ResultMap> getResultMaps() {
+        return resultMaps;
     }
 }

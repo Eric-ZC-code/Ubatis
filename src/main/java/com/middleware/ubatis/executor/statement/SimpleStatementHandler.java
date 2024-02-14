@@ -5,6 +5,7 @@ import com.middleware.ubatis.executor.parameter.ParameterHandler;
 import com.middleware.ubatis.mapping.BoundSql;
 import com.middleware.ubatis.mapping.MappedStatement;
 import com.middleware.ubatis.session.ResultHandler;
+import com.middleware.ubatis.session.RowBounds;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,8 +18,8 @@ import java.util.List;
  */
 public class SimpleStatementHandler extends BaseStatementHandler {
 
-    public SimpleStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameterObject, ResultHandler resultHandler, BoundSql boundSql) {
-        super(executor, mappedStatement, parameterObject, resultHandler, boundSql);
+    public SimpleStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
+        super(executor, mappedStatement, parameterObject, rowBounds, resultHandler, boundSql);
     }
 
     @Override
