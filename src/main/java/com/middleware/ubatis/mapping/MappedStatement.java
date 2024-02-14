@@ -23,7 +23,6 @@ public class MappedStatement {
         // constructor disabled
     }
 
-
     /**
      * 建造映射语句
      */
@@ -87,5 +86,10 @@ public class MappedStatement {
 
     public List<ResultMap> getResultMaps() {
         return resultMaps;
+    }
+
+    public BoundSql getBoundSql(Object parameterObject) {
+        // 调用 SqlSource#getBoundSql
+        return sqlSource.getBoundSql(parameterObject);
     }
 }
