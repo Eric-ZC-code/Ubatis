@@ -143,7 +143,7 @@ public class MapperAnnotationBuilder {
         if (suffix.length() < 1) {
             suffix.append("-void");
         }
-        String resultMapId = type.getName() + "." + method.getName() + suffix;
+        String resultMapId = method.getName() + suffix;
 
         // 添加 ResultMap
         Class<?> returnType = getReturnType(method);

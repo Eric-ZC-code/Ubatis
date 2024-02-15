@@ -77,23 +77,21 @@ public class MapperBuilderAssistant extends BaseBuilder {
             String resultMap,
             Class<?> resultType,
             MappedStatement.Builder statementBuilder) {
-        // 因为暂时还没有在 Mapper XML 中配置 Map 返回结果，所以这里返回的是 null
         resultMap = applyCurrentNamespace(resultMap, true);
 
         List<ResultMap> resultMaps = new ArrayList<>();
 
-        if (resultMap != null) {
-            String[] resultMapNames = resultMap.split(",");
-            for (String resultMapName : resultMapNames) {
-                resultMaps.add(configuration.getResultMap(resultMapName.trim()));
-            }
-        }
         /*
          * 通常使用 resultType 即可满足大部分场景
          * <select id="queryUserInfoById" resultType="com.middleware.ubatis.test.po.User">
          * 使用 resultType 的情况下，Mybatis 会自动创建一个 ResultMap，基于属性名称映射列到 JavaBean 的属性上。
          */
-        else if (resultType != null) {
+        if (resultMap != null) {
+            String[] resultMapNames = resultMap.split(",");
+            for (String resultMapName : resultMapNames) {
+                resultMaps.add(configuration.getResultMap(resultMapName.trim()));
+            }
+        }else if (resultType != null) {
             ResultMap.Builder inlineResultMapBuilder = new ResultMap.Builder(
                     configuration,
                     statementBuilder.id() + "-Inline",

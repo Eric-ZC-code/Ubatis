@@ -22,7 +22,7 @@ public interface IUserDao {
 
     int deleteUserInfoByUserId(String userId);
 
-/*    @Select("SELECT id, userId, userName, userHead\n" +
+ /*   @Select("SELECT id, userId, userName, userHead\n" +
             "FROM user\n" +
             "where id = #{id}")
     User queryUserInfoById(Long id);
