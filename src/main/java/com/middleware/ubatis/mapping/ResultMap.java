@@ -4,6 +4,7 @@ import com.middleware.ubatis.session.Configuration;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -20,6 +21,9 @@ public class ResultMap {
     private ResultMap() {
     }
 
+
+
+
     public static class Builder {
         private ResultMap resultMap = new ResultMap();
 
@@ -31,9 +35,20 @@ public class ResultMap {
 
         public ResultMap build() {
             resultMap.mappedColumns = new HashSet<>();
+            // 添加 mappedColumns 字段
+            for (ResultMapping resultMapping : resultMap.resultMappings) {
+                final String column = resultMapping.getColumn();
+                if (column != null) {
+                    resultMap.mappedColumns.add(column.toUpperCase(Locale.ENGLISH));
+                }
+            }
             return resultMap;
         }
 
+    }
+
+    public List<ResultMapping> getPropertyResultMappings() {
+        return resultMappings;
     }
 
     public String getId() {

@@ -3,7 +3,9 @@ package com.middleware.ubatis.test;
 import com.alibaba.fastjson.JSON;
 import com.middleware.ubatis.io.Resources;
 import com.middleware.ubatis.session.*;
+import com.middleware.ubatis.test.dao.IActivityDao;
 import com.middleware.ubatis.test.dao.IUserDao;
+import com.middleware.ubatis.test.po.Activity;
 import com.middleware.ubatis.test.po.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -98,5 +100,14 @@ public class ApiTest {
         // 2. 测试验证：对象参数
         List<User> users = userDao.queryUserInfoList();
         log.info("测试结果：{}", JSON.toJSONString(users));
+    }
+
+    @Test
+    public void test_queryActivityById(){
+        // 1. 获取映射器对象
+        IActivityDao dao = sqlSession.getMapper(IActivityDao.class);
+        // 2. 测试验证
+        Activity res = dao.queryActivityById(100001L);
+        log.info("测试结果：{}", JSON.toJSONString(res));
     }
 }
