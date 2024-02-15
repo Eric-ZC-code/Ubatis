@@ -1,9 +1,6 @@
 package com.middleware.ubatis.builder;
 
-import com.middleware.ubatis.mapping.MappedStatement;
-import com.middleware.ubatis.mapping.ResultMap;
-import com.middleware.ubatis.mapping.SqlCommandType;
-import com.middleware.ubatis.mapping.SqlSource;
+import com.middleware.ubatis.mapping.*;
 import com.middleware.ubatis.scripting.LanguageDriver;
 import com.middleware.ubatis.session.Configuration;
 
@@ -78,7 +75,10 @@ public class MapperBuilderAssistant extends BaseBuilder {
         List<ResultMap> resultMaps = new ArrayList<>();
 
         if (resultMap != null) {
-            // TODO：暂无Map结果映射配置，本章节不添加此逻辑
+            String[] resultMapNames = resultMap.split(",");
+            for (String resultMapName : resultMapNames) {
+                resultMaps.add(configuration.getResultMap(resultMapName.trim()));
+            }
         }
         /*
          * 通常使用 resultType 即可满足大部分场景
@@ -96,4 +96,15 @@ public class MapperBuilderAssistant extends BaseBuilder {
         statementBuilder.resultMaps(resultMaps);
     }
 
+    public ResultMap addResultMap(String id, Class<?> type, List<ResultMapping> resultMappings) {
+        ResultMap.Builder inlineResultMapBuilder = new ResultMap.Builder(
+                configuration,
+                id,
+                type,
+                resultMappings);
+
+        ResultMap resultMap = inlineResultMapBuilder.build();
+        configuration.addResultMap(resultMap);
+        return resultMap;
+    }
 }

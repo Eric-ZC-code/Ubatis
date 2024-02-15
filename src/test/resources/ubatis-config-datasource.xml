@@ -17,7 +17,8 @@
     </environments>
 
     <mappers>
-        <mapper resource="mapper/UserMapper.xml"/>
+<!--        <mapper resource="mapper/UserMapper.xml"/>-->
+        <mapper class="com.middleware.ubatis.test.dao.IUserDao"/>
     </mappers>
 
 </configuration>

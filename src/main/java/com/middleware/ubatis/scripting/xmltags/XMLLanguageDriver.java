@@ -6,6 +6,7 @@ import com.middleware.ubatis.mapping.MappedStatement;
 import com.middleware.ubatis.mapping.SqlSource;
 import com.middleware.ubatis.scripting.LanguageDriver;
 import com.middleware.ubatis.scripting.defaults.DefaultParameterHandler;
+import com.middleware.ubatis.scripting.defaults.RawSqlSource;
 import com.middleware.ubatis.session.Configuration;
 import org.dom4j.Element;
 
@@ -20,6 +21,11 @@ public class XMLLanguageDriver implements LanguageDriver {
         // 用XML脚本构建器解析
         XMLScriptBuilder builder = new XMLScriptBuilder(configuration, script, parameterType);
         return builder.parseScriptNode();
+    }
+
+    @Override
+    public SqlSource createSqlSource(Configuration configuration, String sql, Class<?> parameterType) {
+        return new RawSqlSource(configuration, sql, parameterType);
     }
 
     @Override

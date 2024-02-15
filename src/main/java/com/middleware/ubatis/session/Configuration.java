@@ -14,6 +14,7 @@ import com.middleware.ubatis.executor.statement.StatementHandler;
 import com.middleware.ubatis.mapping.BoundSql;
 import com.middleware.ubatis.mapping.Environment;
 import com.middleware.ubatis.mapping.MappedStatement;
+import com.middleware.ubatis.mapping.ResultMap;
 import com.middleware.ubatis.reflection.MetaObject;
 import com.middleware.ubatis.reflection.factory.DefaultObjectFactory;
 import com.middleware.ubatis.reflection.factory.ObjectFactory;
@@ -45,8 +46,10 @@ public class Configuration {
     // 注册映射器
     protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
 
-    // 注册SQL语句
+    // 映射的语句，存在Map里
     protected final Map<String, MappedStatement> mappedStatements = new HashMap<>();
+    // 结果映射，存在Map里
+    protected final Map<String, ResultMap> resultMaps = new HashMap<>();
 
     // 类型别名注册机
     protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
@@ -172,5 +175,13 @@ public class Configuration {
 
     public ObjectFactory getObjectFactory() {
         return objectFactory;
+    }
+
+    public void addResultMap(ResultMap resultMap) {
+        resultMaps.put(resultMap.getId(), resultMap);
+    }
+
+    public ResultMap getResultMap(String resultMapName) {
+        return resultMaps.get(resultMapName);
     }
 }
