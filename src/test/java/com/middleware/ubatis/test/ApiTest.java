@@ -110,4 +110,20 @@ public class ApiTest {
         Activity res = dao.queryActivityById(100001L);
         log.info("测试结果：{}", JSON.toJSONString(res));
     }
+
+    @Test
+    public void test_insertActivity() {
+        // 1. 获取映射器对象
+        IActivityDao dao = sqlSession.getMapper(IActivityDao.class);
+        Activity activity = new Activity();
+        activity.setActivityId(10004L);
+        activity.setActivityName("测试活动");
+        activity.setActivityDesc("测试数据插入");
+        activity.setCreator("闷油瓶");
+
+        // 2. 测试验证
+        Integer res = dao.insert(activity);
+        sqlSession.commit();
+        log.info("测试结果：count：{} idx：{}", res, JSON.toJSONString(activity.getId()));
+    }
 }

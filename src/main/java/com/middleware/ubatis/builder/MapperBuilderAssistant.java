@@ -1,5 +1,6 @@
 package com.middleware.ubatis.builder;
 
+import com.middleware.ubatis.executor.keygen.KeyGenerator;
 import com.middleware.ubatis.mapping.*;
 import com.middleware.ubatis.reflection.MetaClass;
 import com.middleware.ubatis.scripting.LanguageDriver;
@@ -51,11 +52,16 @@ public class MapperBuilderAssistant extends BaseBuilder {
             Class<?> parameterType,
             String resultMap,
             Class<?> resultType,
+            KeyGenerator keyGenerator,
+            String keyProperty,
             LanguageDriver lang
     ) {
         // 给id加上namespace前缀：com.middleware.ubatis.test.dao.IUserDao.queryUserInfoById
         id = applyCurrentNamespace(id, false);
         MappedStatement.Builder statementBuilder = new MappedStatement.Builder(configuration, id, sqlCommandType, sqlSource, resultType);
+        statementBuilder.resource(resource);
+        statementBuilder.keyGenerator(keyGenerator);
+        statementBuilder.keyProperty(keyProperty);
 
         // 结果映射，给 MappedStatement#resultMaps
         setStatementResultMap(resultMap, resultType, statementBuilder);

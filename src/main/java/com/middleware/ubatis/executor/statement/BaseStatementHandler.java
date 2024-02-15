@@ -1,6 +1,7 @@
 package com.middleware.ubatis.executor.statement;
 
 import com.middleware.ubatis.executor.Executor;
+import com.middleware.ubatis.executor.keygen.KeyGenerator;
 import com.middleware.ubatis.executor.parameter.ParameterHandler;
 import com.middleware.ubatis.executor.resultset.ResultSetHandler;
 import com.middleware.ubatis.mapping.BoundSql;
@@ -41,6 +42,12 @@ public abstract class BaseStatementHandler implements StatementHandler {
             boundSql = mappedStatement.getBoundSql(parameterObject);
         }
 
+        // 添加 generateKeys
+        if (boundSql == null) {
+            generateKeys(parameterObject);
+            boundSql = mappedStatement.getBoundSql(parameterObject);
+        }
+
         this.boundSql = boundSql;
         this.parameterObject = parameterObject;
         this.parameterHandler = configuration.newParameterHandler(mappedStatement, parameterObject, boundSql);
@@ -64,4 +71,8 @@ public abstract class BaseStatementHandler implements StatementHandler {
 
     protected abstract Statement instantiateStatement(Connection connection) throws SQLException;
 
+    protected void generateKeys(Object parameter) {
+        KeyGenerator keyGenerator = mappedStatement.getKeyGenerator();
+        keyGenerator.processBefore(executor, mappedStatement, null, parameter);
+    }
 }

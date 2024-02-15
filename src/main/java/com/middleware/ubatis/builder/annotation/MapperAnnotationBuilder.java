@@ -8,6 +8,9 @@ import com.middleware.ubatis.annotations.Select;
 import com.middleware.ubatis.annotations.Update;
 import com.middleware.ubatis.binding.MapperMethod;
 import com.middleware.ubatis.builder.MapperBuilderAssistant;
+import com.middleware.ubatis.executor.keygen.Jdbc3KeyGenerator;
+import com.middleware.ubatis.executor.keygen.KeyGenerator;
+import com.middleware.ubatis.executor.keygen.NoKeyGenerator;
 import com.middleware.ubatis.mapping.SqlCommandType;
 import com.middleware.ubatis.mapping.SqlSource;
 import com.middleware.ubatis.scripting.LanguageDriver;
@@ -72,11 +75,20 @@ public class MapperAnnotationBuilder {
         if (sqlSource != null) {
             final String mappedStatementId = method.getName();
             SqlCommandType sqlCommandType = getSqlCommandType(method);
+
+            KeyGenerator keyGenerator;
+            String keyProperty = "id";
+            if (SqlCommandType.INSERT.equals(sqlCommandType) || SqlCommandType.UPDATE.equals(sqlCommandType)) {
+                keyGenerator = configuration.isUseGeneratedKeys() ? new Jdbc3KeyGenerator() : new NoKeyGenerator();
+            } else {
+                keyGenerator = new NoKeyGenerator();
+            }
+
             boolean isSelect = sqlCommandType == SqlCommandType.SELECT;
 
-            String resultMap = null;
+            String resultMapId = null;
             if (isSelect) {
-                resultMap = parseResultMap(method);
+                resultMapId = parseResultMap(method);
             }
 
             // 调用助手类
@@ -85,8 +97,10 @@ public class MapperAnnotationBuilder {
                     sqlSource,
                     sqlCommandType,
                     parameterTypeClass,
-                    resultMap,
+                    resultMapId,
                     getReturnType(method),
+                    keyGenerator,
+                    keyProperty,
                     languageDriver
             );
         }

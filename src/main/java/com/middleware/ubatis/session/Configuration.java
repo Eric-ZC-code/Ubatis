@@ -6,6 +6,7 @@ import com.middleware.ubatis.datasource.pooled.PooledDataSourceFactory;
 import com.middleware.ubatis.datasource.unpooled.UnpooledDataSourceFactory;
 import com.middleware.ubatis.executor.Executor;
 import com.middleware.ubatis.executor.SimpleExecutor;
+import com.middleware.ubatis.executor.keygen.KeyGenerator;
 import com.middleware.ubatis.executor.parameter.ParameterHandler;
 import com.middleware.ubatis.executor.resultset.DefaultResultSetHandler;
 import com.middleware.ubatis.executor.resultset.ResultSetHandler;
@@ -42,6 +43,7 @@ public class Configuration {
 
     // 环境
     protected Environment environment;
+    protected boolean useGeneratedKeys = false;
 
     // 注册映射器
     protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
@@ -50,6 +52,7 @@ public class Configuration {
     protected final Map<String, MappedStatement> mappedStatements = new HashMap<>();
     // 结果映射，存在Map里
     protected final Map<String, ResultMap> resultMaps = new HashMap<>();
+    protected final Map<String, KeyGenerator> keyGenerators = new HashMap<>();
 
     // 类型别名注册机
     protected final TypeAliasRegistry typeAliasRegistry = new TypeAliasRegistry();
@@ -183,5 +186,25 @@ public class Configuration {
 
     public ResultMap getResultMap(String resultMapName) {
         return resultMaps.get(resultMapName);
+    }
+
+    public void addKeyGenerator(String id, KeyGenerator keyGenerator) {
+        keyGenerators.put(id, keyGenerator);
+    }
+
+    public KeyGenerator getKeyGenerator(String id) {
+        return keyGenerators.get(id);
+    }
+
+    public boolean hasKeyGenerator(String id) {
+        return keyGenerators.containsKey(id);
+    }
+
+    public boolean isUseGeneratedKeys() {
+        return useGeneratedKeys;
+    }
+
+    public void setUseGeneratedKeys(boolean useGeneratedKeys) {
+        this.useGeneratedKeys = useGeneratedKeys;
     }
 }
