@@ -10,19 +10,19 @@ import java.util.List;
 
 public interface IUserDao {
 
-//    User queryUserInfoById(Long number);
-//
-//    User queryUserInfo(User user);
-//
-//    List<User> queryUserInfoList();
-//
-//    int updateUserInfo(User req);
-//
-//    void insertUserInfo(User req);
-//
-//    int deleteUserInfoByUserId(String userId);
+    User queryUserInfoById(Long number);
 
-    @Select("SELECT id, userId, userName, userHead\n" +
+    User queryUserInfo(User user);
+
+    List<User> queryUserInfoList();
+
+    int updateUserInfo(User req);
+
+    void insertUserInfo(User req);
+
+    int deleteUserInfoByUserId(String userId);
+
+/*    @Select("SELECT id, userId, userName, userHead\n" +
             "FROM user\n" +
             "where id = #{id}")
     User queryUserInfoById(Long id);
@@ -47,6 +47,6 @@ public interface IUserDao {
     void insertUserInfo(User req);
 
     @Delete("DELETE FROM user WHERE userId = #{userId}")
-    int deleteUserInfoByUserId(String userId);
+    int deleteUserInfoByUserId(String userId);*/
 
 }

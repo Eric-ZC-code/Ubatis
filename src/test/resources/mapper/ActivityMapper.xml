@@ -11,12 +11,6 @@
         <result column="update_time" property="updateTime"/>
     </resultMap>
 
-    <select id="queryActivityById" parameterType="java.lang.Long" resultMap="activityMap">
-        SELECT activity_id, activity_name, activity_desc, create_time, update_time
-        FROM activity
-        WHERE activity_id = #{activityId}
-    </select>
-
     <insert id="insert" parameterType="com.middleware.ubatis.test.po.Activity">
         INSERT INTO activity
         (activity_id, activity_name, activity_desc, create_time, update_time)
@@ -26,5 +20,15 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <select id="queryActivityById" parameterType="com.middleware.ubatis.test.po.Activity" resultMap="activityMap">
+        SELECT activity_id, activity_name, activity_desc, create_time, update_time
+        FROM activity
+        <trim prefix="where" prefixOverrides="AND | OR" suffixOverrides="and">
+            <if test="null != activityId">
+                activity_id = #{activityId}
+            </if>
+        </trim>
+    </select>
 
 </mapper>

@@ -10,8 +10,6 @@ import com.middleware.ubatis.test.po.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -107,7 +105,9 @@ public class ApiTest {
         // 1. 获取映射器对象
         IActivityDao dao = sqlSession.getMapper(IActivityDao.class);
         // 2. 测试验证
-        Activity res = dao.queryActivityById(100001L);
+        Activity req = new Activity();
+        req.setActivityId(100001L);
+        Activity res = dao.queryActivityById(req);
         log.info("测试结果：{}", JSON.toJSONString(res));
     }
 
@@ -116,7 +116,7 @@ public class ApiTest {
         // 1. 获取映射器对象
         IActivityDao dao = sqlSession.getMapper(IActivityDao.class);
         Activity activity = new Activity();
-        activity.setActivityId(10004L);
+        activity.setActivityId(10006L);
         activity.setActivityName("测试活动");
         activity.setActivityDesc("测试数据插入");
         activity.setCreator("闷油瓶");

@@ -66,4 +66,8 @@ public class BoundSql {
     public void setMetaParameters(MetaObject metaParameters) {
         this.metaParameters = metaParameters;
     }
+
+    public void setAdditionalParameter(String key, Object value) {
+        metaParameters.setValue(key, value);
+    }
 }
