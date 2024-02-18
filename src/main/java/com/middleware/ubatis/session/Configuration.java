@@ -45,6 +45,9 @@ public class Configuration {
     protected Environment environment;
     protected boolean useGeneratedKeys = false;
 
+    // 缓存机制，默认不配置的情况是 SESSION
+    protected LocalCacheScope localCacheScope = LocalCacheScope.SESSION;
+
     // 注册映射器
     protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
 
@@ -206,5 +209,13 @@ public class Configuration {
 
     public void setUseGeneratedKeys(boolean useGeneratedKeys) {
         this.useGeneratedKeys = useGeneratedKeys;
+    }
+
+    public void setLocalCacheScope(LocalCacheScope localCacheScope) {
+        this.localCacheScope = localCacheScope;
+    }
+
+    public LocalCacheScope getLocalCacheScope() {
+        return localCacheScope;
     }
 }

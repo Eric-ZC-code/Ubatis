@@ -5,6 +5,7 @@ import com.middleware.ubatis.datasource.DataSourceFactory;
 import com.middleware.ubatis.io.Resources;
 import com.middleware.ubatis.mapping.Environment;
 import com.middleware.ubatis.session.Configuration;
+import com.middleware.ubatis.session.LocalCacheScope;
 import com.middleware.ubatis.transaction.TransactionFactory;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -123,6 +124,22 @@ public class XMLConfigBuilder extends BaseBuilder {
                 configuration.addMapper(mapperInterface);
             }
         }
+    }
+
+    /**
+     * <settings>
+     *     <!--缓存级别：SESSION/STATEMENT-->
+     *     <setting name="localCacheScope" value="SESSION"/>
+     * </settings>
+     */
+    private void settingsElement(Element context) {
+        if (context == null) return;
+        List<Element> elements = context.elements();
+        Properties props = new Properties();
+        for (Element element : elements) {
+            props.setProperty(element.attributeValue("name"), element.attributeValue("value"));
+        }
+        configuration.setLocalCacheScope(LocalCacheScope.valueOf(props.getProperty("localCacheScope")));
     }
 
 }

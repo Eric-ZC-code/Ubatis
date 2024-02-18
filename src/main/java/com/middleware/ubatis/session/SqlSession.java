@@ -72,6 +72,16 @@ public interface SqlSession {
      */
     void commit();
 
+    /**
+     * 关闭Session
+     */
+    void close();
+
+    /**
+     * 清理 Session 缓存
+     */
+    void clearCache();
+
 
     /**
      * 得到映射器，使用泛型保证类型安全

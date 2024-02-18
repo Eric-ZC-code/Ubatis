@@ -1,5 +1,7 @@
 package com.middleware.ubatis.executor;
 
+import com.middleware.ubatis.cache.Cache;
+import com.middleware.ubatis.cache.CacheKey;
 import com.middleware.ubatis.mapping.BoundSql;
 import com.middleware.ubatis.mapping.MappedStatement;
 import com.middleware.ubatis.session.ResultHandler;
@@ -19,8 +21,10 @@ public interface Executor {
 
     int update(MappedStatement ms, Object parameter) throws SQLException;
 
-    <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) throws SQLException;
+    // 查询，含缓存
+    <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, CacheKey cacheKey, BoundSql boundSql) throws SQLException;
 
+    // 查询
     <E> List<E> query(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler) throws SQLException;
 
     Transaction getTransaction();
@@ -30,5 +34,10 @@ public interface Executor {
     void rollback(boolean required) throws SQLException;
 
     void close(boolean forceRollback);
+    // 清理Session缓存
+    void clearLocalCache();
+
+    // 创建缓存 Key
+    CacheKey createCacheKey(MappedStatement ms, Object parameterObject, RowBounds rowBounds, BoundSql boundSql);
 
 }
