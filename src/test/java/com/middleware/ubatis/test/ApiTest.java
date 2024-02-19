@@ -109,7 +109,7 @@ public class ApiTest {
         req.setActivityId(10001L);
 
         log.info("测试结果：{}", JSON.toJSONString(dao.queryActivityById(req)));
-        sqlSession.commit();
+//        sqlSession.commit();
 //        sqlSession.clearCache();
 //        sqlSession.close();
         log.info("测试结果：{}", JSON.toJSONString(dao.queryActivityById(req)));

@@ -1,9 +1,13 @@
 package com.middleware.ubatis.session;
 
 import com.middleware.ubatis.binding.MapperRegistry;
+import com.middleware.ubatis.cache.Cache;
+import com.middleware.ubatis.cache.decorators.FifoCache;
+import com.middleware.ubatis.cache.impl.PerpetualCache;
 import com.middleware.ubatis.datasource.druid.DruidDataSourceFactory;
 import com.middleware.ubatis.datasource.pooled.PooledDataSourceFactory;
 import com.middleware.ubatis.datasource.unpooled.UnpooledDataSourceFactory;
+import com.middleware.ubatis.executor.CachingExecutor;
 import com.middleware.ubatis.executor.Executor;
 import com.middleware.ubatis.executor.SimpleExecutor;
 import com.middleware.ubatis.executor.keygen.KeyGenerator;
@@ -47,6 +51,10 @@ public class Configuration {
 
     // 缓存机制，默认不配置的情况是 SESSION
     protected LocalCacheScope localCacheScope = LocalCacheScope.SESSION;
+    // 默认启用缓存，cacheEnabled = true/false
+    protected boolean cacheEnabled = true;
+    // 缓存,存在Map里
+    protected final Map<String, Cache> caches = new HashMap<>();
 
     // 注册映射器
     protected final MapperRegistry mapperRegistry = new MapperRegistry(this);
@@ -77,6 +85,9 @@ public class Configuration {
         typeAliasRegistry.registerAlias("DRUID", DruidDataSourceFactory.class);
         typeAliasRegistry.registerAlias("UNPOOLED", UnpooledDataSourceFactory.class);
         typeAliasRegistry.registerAlias("POOLED", PooledDataSourceFactory.class);
+
+        typeAliasRegistry.registerAlias("PERPETUAL", PerpetualCache.class);
+        typeAliasRegistry.registerAlias("FIFO", FifoCache.class);
         languageRegistry.setDefaultDriverClass(XMLLanguageDriver.class);
     }
 
@@ -98,7 +109,12 @@ public class Configuration {
      * 生产执行器
      */
     public Executor newExecutor(Transaction transaction) {
-        return new SimpleExecutor(this, transaction);
+        Executor executor = new SimpleExecutor(this, transaction);
+        // 配置开启缓存，创建 CachingExecutor(默认就是有缓存)装饰者模式
+        if (cacheEnabled) {
+            executor = new CachingExecutor(executor);
+        }
+        return executor;
     }
 
 
@@ -217,5 +233,14 @@ public class Configuration {
 
     public LocalCacheScope getLocalCacheScope() {
         return localCacheScope;
+    }
+
+    public void setCacheEnabled(boolean cacheEnabled) {
+        this.cacheEnabled = cacheEnabled;
+    }
+
+
+    public void addCache(Cache cache) {
+        caches.put(cache.getId(), cache);
     }
 }

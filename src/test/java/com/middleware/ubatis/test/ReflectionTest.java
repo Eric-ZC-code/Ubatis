@@ -1,12 +1,20 @@
 package com.middleware.ubatis.test;
 
+import com.middleware.ubatis.io.Resources;
 import com.middleware.ubatis.reflection.MetaObject;
 import com.middleware.ubatis.reflection.SystemMetaObject;
 import com.alibaba.fastjson.JSON;
+import com.middleware.ubatis.session.SqlSession;
+import com.middleware.ubatis.session.SqlSessionFactory;
+import com.middleware.ubatis.session.SqlSessionFactoryBuilder;
+import com.middleware.ubatis.test.dao.IActivityDao;
+import com.middleware.ubatis.test.po.Activity;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +25,33 @@ import java.util.List;
 public class ReflectionTest {
 
     private Logger logger = LoggerFactory.getLogger(ReflectionTest.class);
+
+    @Test
+    public void test_queryActivityById() throws IOException {
+        // 1. 从SqlSessionFactory中获取SqlSession
+        Reader reader = Resources.getResourceAsReader("ubatis-config-datasource.xml");
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
+
+        // 2. 请求对象
+        Activity req = new Activity();
+        req.setActivityId(10001L);
+
+        // 3. 第一组：SqlSession
+        // 3.1 开启 Session
+        SqlSession sqlSession01 = sqlSessionFactory.openSession();
+        // 3.2 获取映射器对象
+        IActivityDao dao01 = sqlSession01.getMapper(IActivityDao.class);
+        logger.info("测试结果01：{}", JSON.toJSONString(dao01.queryActivityById(req)));
+        sqlSession01.close();
+
+        // 4. 第一组：SqlSession
+        // 4.1 开启 Session
+        SqlSession sqlSession02 = sqlSessionFactory.openSession();
+        // 4.2 获取映射器对象
+        IActivityDao dao02 = sqlSession02.getMapper(IActivityDao.class);
+        logger.info("测试结果02：{}", JSON.toJSONString(dao02.queryActivityById(req)));
+        sqlSession02.close();
+    }
 
     @Test
     public void test_reflection() {

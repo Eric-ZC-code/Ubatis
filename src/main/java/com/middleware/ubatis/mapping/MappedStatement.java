@@ -1,5 +1,6 @@
 package com.middleware.ubatis.mapping;
 
+import com.middleware.ubatis.cache.Cache;
 import com.middleware.ubatis.executor.keygen.Jdbc3KeyGenerator;
 import com.middleware.ubatis.executor.keygen.KeyGenerator;
 import com.middleware.ubatis.executor.keygen.NoKeyGenerator;
@@ -27,6 +28,8 @@ public class MappedStatement {
     private String[] keyProperties;
     private String[] keyColumns;
     private boolean flushCacheRequired;
+    private Cache cache;
+    private boolean useCache;
 
     MappedStatement() {
         // constructor disabled
@@ -77,9 +80,23 @@ public class MappedStatement {
             return this;
         }
 
-
         public String id() {
             return mappedStatement.id;
+        }
+
+        public Builder cache(Cache cache) {
+            mappedStatement.cache = cache;
+            return this;
+        }
+
+        public Builder flushCacheRequired(boolean flushCacheRequired) {
+            mappedStatement.flushCacheRequired = flushCacheRequired;
+            return this;
+        }
+
+        public Builder useCache(boolean useCache) {
+            mappedStatement.useCache = useCache;
+            return this;
         }
 
     }
@@ -148,6 +165,14 @@ public class MappedStatement {
 
     public boolean isFlushCacheRequired() {
         return flushCacheRequired;
+    }
+
+    public boolean isUseCache() {
+        return useCache;
+    }
+
+    public Cache getCache() {
+        return cache;
     }
 
 }

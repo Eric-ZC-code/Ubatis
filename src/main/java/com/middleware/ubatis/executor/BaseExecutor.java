@@ -117,6 +117,11 @@ public abstract class BaseExecutor implements Executor {
     }
 
     @Override
+    public void setExecutorWrapper(Executor executor) {
+        this.wrapper = wrapper;
+    }
+
+    @Override
     public void commit(boolean required) throws SQLException {
         if (closed) {
             throw new RuntimeException("Cannot commit, transaction is already closed");

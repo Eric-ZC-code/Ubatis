@@ -45,6 +45,8 @@ public class XMLConfigBuilder extends BaseBuilder {
      */
     public Configuration parse() {
         try {
+            // 设置
+            settingsElement(root.element("settings"));
             // 环境
             environmentsElement(root.element("environments"));
             // 解析映射器
@@ -140,6 +142,7 @@ public class XMLConfigBuilder extends BaseBuilder {
             props.setProperty(element.attributeValue("name"), element.attributeValue("value"));
         }
         configuration.setLocalCacheScope(LocalCacheScope.valueOf(props.getProperty("localCacheScope")));
+        configuration.setCacheEnabled(booleanValueOf(props.getProperty("cacheEnabled"), true));
     }
 
 }
