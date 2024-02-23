@@ -1,5 +1,6 @@
 package com.middleware.ubatis.executor.statement;
 
+import com.middleware.ubatis.mapping.BoundSql;
 import com.middleware.ubatis.session.ResultHandler;
 
 import java.sql.Connection;
@@ -24,4 +25,7 @@ public interface StatementHandler {
 
     /** 执行增删改 */
     int update(Statement stmt) throws SQLException;
+
+    /** 获取绑定SQL */
+    BoundSql getBoundSql();
 }

@@ -26,6 +26,7 @@ public class ReflectionTest {
 
     private Logger logger = LoggerFactory.getLogger(ReflectionTest.class);
 
+    // 验证二级缓存功能
     @Test
     public void test_queryActivityById() throws IOException {
         // 1. 从SqlSessionFactory中获取SqlSession

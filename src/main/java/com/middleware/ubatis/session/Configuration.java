@@ -20,6 +20,8 @@ import com.middleware.ubatis.mapping.BoundSql;
 import com.middleware.ubatis.mapping.Environment;
 import com.middleware.ubatis.mapping.MappedStatement;
 import com.middleware.ubatis.mapping.ResultMap;
+import com.middleware.ubatis.plugin.Interceptor;
+import com.middleware.ubatis.plugin.InterceptorChain;
 import com.middleware.ubatis.reflection.MetaObject;
 import com.middleware.ubatis.reflection.factory.DefaultObjectFactory;
 import com.middleware.ubatis.reflection.factory.ObjectFactory;
@@ -72,6 +74,9 @@ public class Configuration {
     // 类型处理器注册机
     protected final TypeHandlerRegistry typeHandlerRegistry = new TypeHandlerRegistry();
 
+    // 插件拦截器链
+    protected final InterceptorChain interceptorChain = new InterceptorChain();
+
     // 对象工厂和对象包装器工厂
     protected ObjectFactory objectFactory = new DefaultObjectFactory();
     protected ObjectWrapperFactory objectWrapperFactory = new DefaultObjectWrapperFactory();
@@ -102,7 +107,11 @@ public class Configuration {
      * 创建语句处理器
      */
     public StatementHandler newStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameter, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
-        return new PreparedStatementHandler(executor, mappedStatement, parameter, rowBounds, resultHandler, boundSql);
+        // 创建语句处理器，Mybatis 这里加了路由 STATEMENT、PREPARED、CALLABLE 我们默认只根据预处理进行实例化
+        StatementHandler statementHandler = new PreparedStatementHandler(executor, mappedStatement, parameter, rowBounds, resultHandler, boundSql);
+        // 嵌入插件，代理对象
+        statementHandler = (StatementHandler) interceptorChain.pluginAll(statementHandler);
+        return statementHandler;
     }
 
     /**
@@ -242,5 +251,9 @@ public class Configuration {
 
     public void addCache(Cache cache) {
         caches.put(cache.getId(), cache);
+    }
+
+    public void addInterceptor(Interceptor interceptorInstance) {
+        interceptorChain.addInterceptor(interceptorInstance);
     }
 }
